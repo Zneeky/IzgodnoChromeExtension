@@ -1,18 +1,21 @@
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { ChromeExtensionService } from '../chrome.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-recommendation',
   templateUrl: './product-recommendation.component.html',
   styleUrl: './product-recommendation.component.scss',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   standalone: true
 })
 export class ProductRecommendationComponent implements OnInit, OnDestroy {
   productName: string | null = null;
   productPrice: string | null = null;
   errorMessage: string | null = null;
+  public manualProduct: string = '';
+  recommendations: { vendor: string; price: string }[] = [];
 
   constructor(private ngZone: NgZone) {}
 

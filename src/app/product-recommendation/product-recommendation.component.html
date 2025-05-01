@@ -1,14 +1,50 @@
-<div class="popup-container">
-    <h2>Product Recommendation</h2>
+<div class="card w-80 bg-base-100 shadow-xl">
+    <div class="btn btn-primary">Tailwind + daisyUI works 🎉</div>
+    <div class="card-body space-y-3">
+      <h2 class="card-title text-primary">🧠 Product Recommendation</h2>
   
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+      <div class="flex gap-2">
+        <input
+          type="text"
+          placeholder="Enter product name"
+          [(ngModel)]="manualProduct"
+          class="input input-sm input-bordered w-full"
+        />
+        <button class="btn btn-sm btn-primary" (click)="extractFromActiveTab()">🔄</button>
+      </div>
   
-    <div *ngIf="productName && productPrice">
-      <p><strong>Name:</strong> {{ productName }}</p>
-      <p><strong>Price:</strong> {{ productPrice }}</p>
-    </div>
+      <div *ngIf="errorMessage" class="alert alert-error text-sm">
+        <span>⚠️ {{ errorMessage }}</span>
+      </div>
   
-    <div *ngIf="!productName || !productPrice">
-      <p>Loading product info...</p>
+      <div *ngIf="productName && productPrice" class="space-y-1">
+        <p class="text-sm">
+          <span class="font-semibold">📦 Name:</span>
+          <span class="badge badge-ghost">{{ productName }}</span>
+        </p>
+        <p class="text-sm">
+          <span class="font-semibold">💰 Price:</span>
+          <span class="badge badge-accent">{{ productPrice }}</span>
+        </p>
+      </div>
+  
+      <div *ngIf="!productName || !productPrice" class="text-sm text-gray-400 flex items-center gap-2">
+        <span class="loading loading-spinner loading-sm text-primary"></span>
+        Scanning product info...
+      </div>
+  
+      <div *ngIf="recommendations.length > 0">
+        <p class="font-semibold text-sm mb-1">🛍️ Other Offers:</p>
+        <ul class="menu bg-base-200 rounded-box p-2 text-sm space-y-1">
+          <li *ngFor="let item of recommendations">
+            <a class="justify-between">
+              {{ item.vendor }}
+              <span class="badge badge-outline">{{ item.price }}</span>
+            </a>
+          </li>
+        </ul>
+        <button class="btn btn-sm btn-secondary w-full mt-2">View All Deals</button>
+      </div>
     </div>
   </div>
+  

@@ -1,5 +1,4 @@
 <div class="card w-80 bg-base-100 shadow-xl">
-    <div class="btn btn-primary">Tailwind + daisyUI works 🎉</div>
     <div class="card-body space-y-3">
       <h2 class="card-title text-primary">🧠 Product Recommendation</h2>
   
@@ -10,7 +9,7 @@
           [(ngModel)]="manualProduct"
           class="input input-sm input-bordered w-full"
         />
-        <button class="btn btn-sm btn-primary" (click)="extractFromActiveTab()">🔄</button>
+        <button class="btn btn-sm btn-primary" (click)="extractFromActiveTab()">Exctract from page</button>
       </div>
   
       <div *ngIf="errorMessage" class="alert alert-error text-sm">

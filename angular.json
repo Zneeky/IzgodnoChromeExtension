@@ -17,6 +17,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "stylePreprocessorOptions": {
+              "includePaths": ["node_modules"]
+            },
             "outputPath": "dist/izgodno-chrome-extension",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -43,6 +46,11 @@
                 "glob": "images/*",
                 "input": "src",
                 "output": "/"
+              },
+              {
+                "glob": "extract-product-info.js",
+                "input": "src/assets/scripts",
+                "output": "assets/scripts"
               }
             ],
             "styles": [
@@ -116,6 +124,11 @@
                 "glob": "images/*",
                 "input": "src",
                 "output": "/"
+              },
+              {
+                "glob": "extract-product-info.js",
+                "input": "src/assets/scripts",
+                "output": "assets/scripts"
               }
             ],
             "styles": [

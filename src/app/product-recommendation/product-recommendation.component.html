@@ -1,3 +1,14 @@
-<p>product-recommendation works!</p>
-<!-- product-recommendation.component.html -->
-<button (click)="openProductPage()">Open Product Page</button>
+<div class="popup-container">
+    <h2>Product Recommendation</h2>
+  
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  
+    <div *ngIf="productName && productPrice">
+      <p><strong>Name:</strong> {{ productName }}</p>
+      <p><strong>Price:</strong> {{ productPrice }}</p>
+    </div>
+  
+    <div *ngIf="!productName || !productPrice">
+      <p>Loading product info...</p>
+    </div>
+  </div>

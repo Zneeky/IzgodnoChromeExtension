@@ -3,7 +3,7 @@
     "name": "Izgodno",
     "description": "Find the best deals in Bulgaria!",
     "version": "1.0.0",
-    "permissions": ["storage", "tabs"],
+    "permissions": ["activeTab", "scripting", "storage", "tabs"],
     "background": {
         "service_worker": "background.js"
     },

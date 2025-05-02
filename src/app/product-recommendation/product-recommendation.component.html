@@ -1,49 +1,53 @@
-<div class="card w-80 bg-base-100 shadow-xl">
-    <div class="card-body space-y-3">
-      <h2 class="card-title text-primary">🧠 Product Recommendation</h2>
+<div class="card bg-base-100 shadow-lg w-80 p-4 space-y-4">
+    <!-- Brand (top-left) -->
+    <h1 class="text-sm font-semibold text-gray-700">
+      Izgodno.bg
+    </h1>
   
-      <div class="flex gap-2">
-        <input
-          type="text"
-          placeholder="Enter product name"
-          [(ngModel)]="manualProduct"
-          class="input input-sm input-bordered w-full"
+    <!-- Main Product -->
+    <div class="bg-white rounded-xl p-4 shadow">
+      <div class="flex gap-4">
+        <img
+          [src]="productImageUrl"
+          alt="Product"
+          class="w-20 h-20 object-contain rounded flex-shrink-0"
         />
-        <button class="btn btn-sm btn-primary" (click)="extractFromActiveTab()">Exctract from page</button>
-      </div>
-  
-      <div *ngIf="errorMessage" class="alert alert-error text-sm">
-        <span>⚠️ {{ errorMessage }}</span>
-      </div>
-  
-      <div *ngIf="productName && productPrice" class="space-y-1">
-        <p class="text-sm">
-          <span class="font-semibold">📦 Name:</span>
-          <span class="badge badge-ghost">{{ productName }}</span>
-        </p>
-        <p class="text-sm">
-          <span class="font-semibold">💰 Price:</span>
-          <span class="badge badge-accent">{{ productPrice }}</span>
-        </p>
-      </div>
-  
-      <div *ngIf="!productName || !productPrice" class="text-sm text-gray-400 flex items-center gap-2">
-        <span class="loading loading-spinner loading-sm text-primary"></span>
-        Scanning product info...
-      </div>
-  
-      <div *ngIf="recommendations.length > 0">
-        <p class="font-semibold text-sm mb-1">🛍️ Other Offers:</p>
-        <ul class="menu bg-base-200 rounded-box p-2 text-sm space-y-1">
-          <li *ngFor="let item of recommendations">
-            <a class="justify-between">
-              {{ item.vendor }}
-              <span class="badge badge-outline">{{ item.price }}</span>
-            </a>
-          </li>
-        </ul>
-        <button class="btn btn-sm btn-secondary w-full mt-2">View All Deals</button>
+        <div class="flex flex-col justify-center h-20 overflow-hidden">
+          <h2
+            class="text-sm font-semibold text-gray-800 leading-tight line-clamp-2"
+            [title]="productName"
+          >
+            {{ productName }}
+          </h2>
+          <p class="text-lg font-bold text-blue-600 mt-1">
+            {{ productPrice }}
+          </p>
+        </div>
       </div>
     </div>
-  </div>
   
+    <!-- Divider -->
+    <div class="border-t border-base-300"></div>
+  
+    <!-- Secondary Title -->
+    <p class="text-sm font-semibold text-gray-700">Сравни цените</p>
+  
+    <!-- Recommendations -->
+    <div *ngIf="recommendations.length > 0" class="space-y-1">
+      <ul class="space-y-1">
+        <li
+          *ngFor="let item of recommendations"
+          class="flex justify-between items-center bg-base-200 p-2 rounded-md text-sm"
+        >
+          <span class="truncate w-2/3" [title]="item.vendor">
+            🏪 {{ item.vendor }}
+          </span>
+          <span class="font-semibold text-green-600">{{ item.price }}</span>
+        </li>
+      </ul>
+  
+      <button class="btn btn-sm btn-outline w-full mt-2">
+        View All Deals
+      </button>
+    </div>
+  </div>

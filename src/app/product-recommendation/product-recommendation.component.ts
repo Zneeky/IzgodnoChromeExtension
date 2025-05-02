@@ -13,9 +13,10 @@ import { FormsModule } from '@angular/forms';
 export class ProductRecommendationComponent implements OnInit, OnDestroy {
   productName: string | null = null;
   productPrice: string | null = null;
+  productImageUrl: string | null = null;
   errorMessage: string | null = null;
   public manualProduct: string = '';
-  recommendations: { vendor: string; price: string }[] = [];
+  recommendations: { vendor: string; price: string; productPageUrl: string; }[] = [];
 
   constructor(private ngZone: NgZone) {}
 
@@ -46,7 +47,8 @@ export class ProductRecommendationComponent implements OnInit, OnDestroy {
       this.ngZone.run(() => {
         this.productName = message.payload.name || 'Not found';
         this.productPrice = message.payload.price || 'Not found';
-
+        this.productImageUrl = message.payload.image || 'https://pngimg.com/d/iphone16_PNG2.png';
+        this.generateMockRecommendations(this.productName || 'Product');
         if (message.payload.error) {
           this.errorMessage = `Error: ${message.payload.error}`;
         }
@@ -82,4 +84,24 @@ export class ProductRecommendationComponent implements OnInit, OnDestroy {
       this.extractFromActiveTab();
     }
   };
+
+  generateMockRecommendations(productName: string): void {
+    const vendors = ['emag.bg', 'technopolis.bg', 'ozone.bg', 'plesio.bg', 'desktop.bg'];
+    const basePrice = parseFloat(this.productPrice?.replace(/[^\d.]/g, '') || '1000');
+  
+    this.recommendations = vendors.map((vendor, index) => {
+      const priceOffset = Math.round((Math.random() * 100 - 50)); // ±50 range
+      const price = (basePrice + priceOffset).toFixed(2);
+      const currency = this.productPrice?.includes('лв') ? 'лв.' : 'BGN';
+  
+      return {
+        vendor,
+        price: `${price} ${currency}`,
+        productPageUrl: `https://${vendor}/search?q=${encodeURIComponent(productName)}`
+      };
+    });
+  
+    // Sort from cheapest to most expensive
+    this.recommendations.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+  }
 }

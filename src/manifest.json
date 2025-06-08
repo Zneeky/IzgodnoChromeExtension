@@ -3,7 +3,11 @@
     "name": "Izgodno",
     "description": "Find the best deals in Bulgaria!",
     "version": "1.0.0",
-    "permissions": ["activeTab", "scripting", "storage", "tabs"],
+    "permissions": ["activeTab", "scripting", "storage", "tabs", "identity"],
+    "oauth2": {
+        "client_id": "798771494784-paefnc51m7osprf9hv7a75d908gp5jts.apps.googleusercontent.com",
+        "scopes": ["profile", "email"]
+    },
     "background": {
         "service_worker": "background.js"
     },

@@ -51,6 +51,11 @@
                 "glob": "extract-product-info.js",
                 "input": "src/assets/scripts",
                 "output": "assets/scripts"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -136,6 +141,11 @@
                 "glob": "extract-product-info.js",
                 "input": "src/assets/scripts",
                 "output": "assets/scripts"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
               }
             ],
             "styles": [

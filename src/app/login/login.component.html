@@ -1,0 +1,16 @@
+<div class="flex flex-col items-center justify-center text-center pb-4 w-full h-full">
+  <img src="images/icon128.png" alt="Izgodno Logo" class="w-20 h-20 mb-4" />
+  <h1 class="text-xl font-semibold mb-2">Welcome to <span class="text-primary">Izgodno.bg</span></h1>
+  
+  <p class="text-sm text-gray-500 mt-2 mb-1">
+    Find the best prices for your favorite products.
+  </p>
+
+  <button (click)="signIn()"
+          class="btn btn-outline btn-wide gap-2 shadow-md hover:shadow-lg transition-all duration-300">
+    <img src="assets/images/icons8-google.svg" alt="Google" class="w-5 h-5" />
+    Sign in with Google
+  </button>
+
+  <p *ngIf="errorMessage" class="text-error mt-4 text-sm">{{ errorMessage }}</p>
+</div>

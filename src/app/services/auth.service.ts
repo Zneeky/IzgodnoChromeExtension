@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   isAuthenticated = false;
+
+  constructor(private router: Router) {}
 
   async loginWithGoogle(): Promise<void> {
     const clientId = '798771494784-paefnc51m7osprf9hv7a75d908gp5jts.apps.googleusercontent.com';
@@ -49,16 +52,6 @@ export class AuthService {
     this.isAuthenticated = true;
   }
 
-  async checkAuth(): Promise<boolean> {
-    const response = await fetch('https://localhost:7084/api/Auth/check-auth', {
-      method: 'GET',
-      credentials: 'include'
-    });
-
-    this.isAuthenticated = response.ok;
-    return this.isAuthenticated;
-  }
-
   async logout(): Promise<void> {
     await fetch('https://localhost:7084/api/Auth/logout', {
       method: 'POST',
@@ -66,5 +59,51 @@ export class AuthService {
     });
 
     this.isAuthenticated = false;
+    this.router.navigate(['/login']);
   }
+
+  async fetchWithAuth(input: RequestInfo, init?: RequestInit): Promise<Response> {
+    const isValid = await this.tryAuthenticate();
+    if (!isValid) this.router.navigate(['/login']);
+
+    const response = await fetch(input, {
+      ...init,
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(init?.headers || {})
+      }
+    });
+
+    return response;
+  }
+
+  async tryAuthenticate(): Promise<boolean> {
+    const isAuth = await fetch('https://localhost:7084/api/Auth/check-auth', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+        'Content-Type': 'application/json'
+        }
+    });
+
+    if (isAuth.ok) {
+        this.isAuthenticated = true;
+        return true;
+    } 
+
+    // Try refresh
+    const refreshResponse = await fetch('https://localhost:7084/api/Auth/refresh-token', {
+        method: 'POST',
+        credentials: 'include'
+    });
+
+    if (refreshResponse.ok) {
+        this.isAuthenticated = true;
+        return true;
+    }
+
+    this.isAuthenticated = false;
+    return false;
+   }
 }

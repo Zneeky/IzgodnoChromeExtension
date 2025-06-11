@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { SignalRService } from './signalR.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   isAuthenticated = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private signalRService: SignalRService) {}
 
   async loginWithGoogle(): Promise<void> {
     const clientId = '798771494784-paefnc51m7osprf9hv7a75d908gp5jts.apps.googleusercontent.com';
@@ -50,6 +51,7 @@ export class AuthService {
     if (!response.ok) throw new Error('Backend authentication failed');
 
     this.isAuthenticated = true;
+    await this.signalRService.connect();
   }
 
   async logout(): Promise<void> {
@@ -89,17 +91,22 @@ export class AuthService {
 
     if (isAuth.ok) {
         this.isAuthenticated = true;
+        await this.signalRService.connect();
         return true;
     } 
 
     // Try refresh
     const refreshResponse = await fetch('https://localhost:7084/api/Auth/refresh-token', {
         method: 'POST',
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     });
 
     if (refreshResponse.ok) {
         this.isAuthenticated = true;
+        await this.signalRService.connect();
         return true;
     }
 

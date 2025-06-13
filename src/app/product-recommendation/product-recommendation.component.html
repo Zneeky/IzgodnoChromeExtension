@@ -8,19 +8,19 @@
     <div class="bg-white rounded-xl p-4 shadow">
       <div class="flex gap-4">
         <img
-          [src]="productImageUrl"
+          [src]="product.imageUrl"
           alt="Product"
           class="w-20 h-20 object-contain rounded flex-shrink-0"
         />
         <div class="flex flex-col justify-center h-20 overflow-hidden">
           <h2
             class="text-sm font-semibold text-gray-800 leading-tight line-clamp-2"
-            [title]="productName"
+            [title]="product.name"
           >
-            {{ productName }}
+            {{ product.name }}
           </h2>
           <p class="text-lg font-bold text-blue-600 mt-1">
-            {{ productPrice }}
+            {{ product.price }}
           </p>
         </div>
       </div>
@@ -33,10 +33,10 @@
     <p class="text-sm font-semibold text-gray-700">Сравни цените</p>
   
     <!-- Recommendations -->
-    <div *ngIf="recommendations.length > 0" class="space-y-1">
+    <div *ngIf="offers.length > 0" class="space-y-1">
       <ul class="space-y-1">
         <li
-          *ngFor="let item of recommendations"
+          *ngFor="let item of offers"
           class="flex justify-between items-center bg-base-200 p-2 rounded-md text-sm"
         >
           <span class="truncate w-2/3" [title]="item.vendor">
@@ -45,9 +45,5 @@
           <span class="font-semibold text-green-600">{{ item.price }}</span>
         </li>
       </ul>
-  
-      <button class="btn btn-sm btn-outline w-full mt-2">
-        View All Deals
-      </button>
     </div>
   </div>

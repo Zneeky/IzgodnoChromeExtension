@@ -1,0 +1,21 @@
+<div class="space-y-4">
+  <div *ngIf="stage === 'idle'" class="space-y-4">
+    <h2 class="text-lg font-semibold text-gray-700">Izgodno.bg</h2>
+    <p class="text-sm text-gray-600">Увери се, че си на страницата на продукт и натисни бутона по-долу, за да намерим най-добрите оферти!</p>
+    <button class="btn btn-primary w-full" (click)="startRecommendationFlow()">Намери оферти</button>
+  </div>
+
+  <div *ngIf="stage === 'loading'" class="flex flex-col items-center space-y-2">
+    <span class="loading loading-spinner loading-lg text-primary"></span>
+    <div class="text-sm text-center text-gray-600">
+      <p>Търсим най-добрите оферти...</p>
+      <p>Почти готово...</p>
+    </div>
+  </div>
+
+  <app-product-recommendation
+    *ngIf="stage === 'done'"
+    [product]="product!"
+    [offers]="offers">
+  </app-product-recommendation>
+</div>

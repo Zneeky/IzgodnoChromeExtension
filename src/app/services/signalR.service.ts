@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
 import {
+    HttpTransportType,
   HubConnection,
   HubConnectionBuilder,
   HubConnectionState
 } from '@microsoft/signalr';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SignalRService {
   private hubConnection: HubConnection | null = null;
   private connectionId: string | null = null;
+
+  private productResultSubject = new Subject<any>(); // You can strongly type this
+
+  productResult$ = this.productResultSubject.asObservable(); // Expose as observable
 
   async connect(): Promise<void> {
     if (this.hubConnection?.state === HubConnectionState.Connected) {
@@ -19,14 +25,16 @@ export class SignalRService {
     if (!this.hubConnection) {
       this.hubConnection = new HubConnectionBuilder()
         .withUrl('https://localhost:7084/hubs/notification', {
-          withCredentials: true
+          withCredentials: true,
+          transport: HttpTransportType.WebSockets,
+          skipNegotiation: true
         })
-        .withAutomaticReconnect()
+        .withAutomaticReconnect([0, 2000, 50000, 100000])
         .build();
 
       this.hubConnection.on('ReceiveProductResult', (result) => {
         console.log('Received product result:', result);
-        // TODO: emit via Subject or update UI
+        this.productResultSubject.next(result);
       });
 
       this.hubConnection.onreconnecting(() => {
@@ -50,6 +58,12 @@ export class SignalRService {
     } catch (error) {
       console.error('SignalR connection failed:', error);
       throw error;
+    }
+  }
+
+  async sendPing(): Promise<void> {
+    if (this.hubConnection?.state === HubConnectionState.Connected) {
+        await this.hubConnection.send('Ping');
     }
   }
 

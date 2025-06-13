@@ -3,6 +3,7 @@
     function extractProductInfo() {
         let name = null;
         let price = null;
+        let image = null;
     
         // 1. Try Open Graph meta tags for title and price
         const ogTitle = document.querySelector('meta[property="og:title"], meta[name="og:title"]');
@@ -17,10 +18,21 @@
             price += ' ' + ogCurrency.content;
           }
         }
+        const ogImage = document.querySelector('meta[property="og:image"], meta[name="og:image"]');
+        if (ogImage?.content) {
+          image = ogImage.content;
+        }
         const twitterLabel = document.querySelector('meta[name="twitter:label1"][content*="Price"]');
         const twitterPrice = document.querySelector('meta[name="twitter:data1"]');
         if (!price && twitterLabel && twitterPrice && twitterPrice.content) {
           price = twitterPrice.content;
+        }
+
+        if (!image) {
+          const twitterImage = document.querySelector('meta[name="twitter:image"]');
+          if (twitterImage?.content) {
+            image = twitterImage.content;
+          }
         }
     
         // 2. JSON-LD structured data
@@ -44,6 +56,13 @@
                 if (!name && productData.title) {
                   name = productData.title;
                 }
+                if (!image && productData?.image) {
+                  if (Array.isArray(productData.image)) {
+                    image = productData.image[0]; // use first
+                  } else {
+                    image = productData.image;
+                  }
+                }
                 if (!price && productData.offers) {
                   const offer = Array.isArray(productData.offers) ? productData.offers[0] : productData.offers;
                   if (offer) {
@@ -61,7 +80,7 @@
             } catch (e) {
               continue;
             }
-            if (name && price) break;
+            if (name && price && image) break;
           }
         }
     
@@ -109,8 +128,15 @@
             price = match[0].trim();
           }
         }
+
+        if (!image) {
+          const fallbackImg = document.querySelector('main img, [class*="product"] img');
+          if (fallbackImg?.src) {
+            image = fallbackImg.src;
+          }
+        }
     
-        return { name: name || null, price: price || null };
+        return { name: name || null, price: price || null, image: image || null };
     }
     
     function sendExtractedData() {

@@ -14,7 +14,7 @@ export class HomeComponent {
   stage: 'idle' | 'loading' | 'done' = 'idle';
 
   product: { name: string; price: string; imageUrl: string } | null = null;
-  offers: { vendor: string; price: string; productPageUrl: string }[] = [];
+  offers: { vendor: string; name:string; price: string; productPageUrl: string }[] = [];
 
   public constructor(private  signalRService: SignalRService ){
 
@@ -22,8 +22,9 @@ export class HomeComponent {
 
   ngOnInit():void{
     this.signalRService.productResult$.subscribe(result => {
-        this.offers = result.offers.map((offer: { store: any; price: number; url: any; }) => ({
+        this.offers = result.offers.map((offer: { store: any; name:string; price: number; url: any; }) => ({
           vendor: offer.store,
+          name: offer.name,
           price: `${offer.price.toFixed(2)} лв.`,
           productPageUrl: offer.url
         }));

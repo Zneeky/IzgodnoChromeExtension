@@ -12,5 +12,9 @@ import { FormsModule } from '@angular/forms';
 })
 export class ProductRecommendationComponent {
   @Input() product!: { name: string; price: string; imageUrl: string };
-  @Input() offers: { vendor: string; price: string; productPageUrl: string }[] = [];
+  @Input() offers: { vendor: string; name: string; price: string; productPageUrl: string }[] = [];
+
+  openInNewTab(url: string): void {
+    chrome.runtime.sendMessage({ action: 'openTab', url });
+  }
 }

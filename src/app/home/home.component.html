@@ -1,21 +1,48 @@
-<div class="space-y-4">
-  <div *ngIf="stage === 'idle'" class="space-y-4">
-    <h2 class="text-lg font-semibold text-gray-700">Izgodno.bg</h2>
-    <p class="text-sm text-gray-600">Увери се, че си на страницата на продукт и натисни бутона по-долу, за да намерим най-добрите оферти!</p>
-    <button class="btn btn-primary w-full" (click)="startRecommendationFlow()">Намери оферти</button>
-  </div>
+<!-- ✅ IDLE & LOADING - Centered Layout -->
+<div *ngIf="stage === 'idle' || stage === 'loading'" class="w-full h-full flex items-center justify-center px-4 py-4">
+  <div class="space-y-4 w-full max-w-sm">
 
-  <div *ngIf="stage === 'loading'" class="flex flex-col items-center space-y-2">
-    <span class="loading loading-spinner loading-lg text-primary"></span>
-    <div class="text-sm text-center text-gray-600">
-      <p>Търсим най-добрите оферти...</p>
-      <p>Почти готово...</p>
+    <!-- IDLE STATE -->
+    <div *ngIf="stage === 'idle'" class="card shadow-lg bg-base-100 p-6 space-y-4 animate-fade-in text-center">
+      <div class="flex justify-center">
+        <img src="images/icon128.png" alt="Izgodno Logo" class="w-20 h-20 mb-2 rounded-xl shadow-md" />
+      </div>
+      <h2 class="text-xl font-bold text-primary">Izgodno.bg</h2>
+      <p class="text-sm text-gray-600">
+        Увери се, че си на страницата на продукт и натисни бутона по-долу, за да намерим най-добрите оферти!
+      </p>
+      <button class="btn btn-primary w-full gap-2" (click)="startRecommendationFlow()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
+        </svg>
+        Намери оферти
+      </button>
+      <ul class="text-xs text-gray-500 list-disc list-inside mt-2 text-left">
+        <li>Поддържа над 40+ онлайн магазина за телефони и парфюми</li>
+      </ul>
     </div>
-  </div>
 
-  <app-product-recommendation
-    *ngIf="stage === 'done'"
-    [product]="product!"
-    [offers]="offers">
-  </app-product-recommendation>
+    <!-- LOADING STATE -->
+    <div *ngIf="stage === 'loading'" class="flex flex-col items-center space-y-2 animate-pulse text-center">
+      <span class="loading loading-spinner loading-lg text-primary"></span>
+      <div class="text-sm text-gray-600">
+        <p>Търсим най-добрите оферти...</p>
+        <p class="text-primary font-medium">Почти готово...</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ✅ DONE - Fullscreen Layout Centered and Responsive -->
+<div *ngIf="stage === 'done'" class="w-full h-full overflow-y-auto">
+  <div class="w-full max-w-md mx-auto px-4 pt-4">
+    <app-product-recommendation
+      class="w-full max-w-md"
+      [product]="product!"
+      [offers]="offers">
+    </app-product-recommendation>
+  </div>
 </div>
